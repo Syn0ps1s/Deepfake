@@ -1,4 +1,8 @@
+#this code imports libraries that we will need for trainign and imports 
+#a premade model called deepfake-detection-model.h5
+
 {
+
  "cells": [
   {
    "cell_type": "code",
@@ -7,15 +11,16 @@
    "outputs": [],
    "source": [
     "import tensorflow as tf\n",
-    "import dlib\n",
-    "import cv2\n",
-    "import os\n",
+    "import dlib\n", #imports dlib for face recongnition and machine learning, also provides pre-trained models for detection
+    "import cv2\n", #provides tools for image and video processing
+    "import os\n", #to access files and directories 
     "import numpy as np\n",
-    "from PIL import Image, ImageChops, ImageEnhance\n",
-    "from tensorflow.keras.models import load_model\n",
-    "from tensorflow.keras.preprocessing.image import img_to_array, load_img"
+    "from PIL import Image, ImageChops, ImageEnhance\n",#imports modulaes for openign, manipulating, enhancing images
+    "from tensorflow.keras.models import load_model\n", #imports allow loading premade model for deepfake detection
+    "from tensorflow.keras.preprocessing.image import img_to_array, load_img" #imports tools for tunring images into arrays for modeling then back into images
    ]
   },
+
   {
    "cell_type": "code",
    "execution_count": 2,
@@ -36,22 +41,25 @@
     "tf.__version__"
    ]
   },
+
+#this cell just loads the model into a variable called model
   {
    "cell_type": "code",
    "execution_count": 3,
    "metadata": {},
    "outputs": [],
    "source": [
-    "model = load_model('deepfake-detection-model.h5')"
+    "model = load_model('deepfake-detection-model.h5')" #load pre-trained keras model from deepfake-detection-model.h5 into varible model
    ]
   },
+
   {
    "cell_type": "code",
    "execution_count": 4,
    "metadata": {},
    "outputs": [
     {
-     "name": "stdout",
+     "name": "stdout", 
      "output_type": "stream",
      "text": [
       "[1]\n",
@@ -68,29 +76,31 @@
     }
    ],
    "source": [
-    "input_shape = (128, 128, 3)\n",
-    "pr_data = []\n",
-    "detector = dlib.get_frontal_face_detector()\n",
-    "cap = cv2.VideoCapture('test_videos/jzmzdispyo.mp4')\n",
-    "frameRate = cap.get(5)\n",
-    "while cap.isOpened():\n",
-    "    frameId = cap.get(1)\n",
-    "    ret, frame = cap.read()\n",
-    "    if ret != True:\n",
+    "input_shape = (128, 128, 3)\n", #defines the shape of the input images, 128 x128 pixels, with 3 color channels
+    "pr_data = []\n", #empty list that stores prediction data?
+    "detector = dlib.get_frontal_face_detector()\n", #gets the face detector from dlib
+    "cap = cv2.VideoCapture('test_videos/jzmzdispyo.mp4')\n", #opens video file
+    "frameRate = cap.get(5)\n", #gets frame rate of video
+
+    "while cap.isOpened():\n",#loop goes through every frame in video
+    "    frameId = cap.get(1)\n", #gets frame number
+    "    ret, frame = cap.read()\n", #reads frame
+    "    if ret != True:\n", #break if frame not read correctly
     "        break\n",
-    "    if frameId % ((int(frameRate)+1)*1) == 0:\n",
-    "        face_rects, scores, idx = detector.run(frame, 0)\n",
-    "        for i, d in enumerate(face_rects):\n",
-    "            x1 = d.left()\n",
+    "    if frameId % ((int(frameRate)+1)*1) == 0:\n", #checks if frame is 1 second apart
+    "        face_rects, scores, idx = detector.run(frame, 0)\n", #uses face detection of frame
+    "        for i, d in enumerate(face_rects):\n",#loops through every face detected in frame
+    "            x1 = d.left()\n", #x1,x2,y1,y2 gets coordinated of the fame
     "            y1 = d.top()\n",
     "            x2 = d.right()\n",
     "            y2 = d.bottom()\n",
-    "            crop_img = frame[y1:y2, x1:x2]\n",
-    "            data = img_to_array(cv2.resize(crop_img, (128, 128))).flatten() / 255.0\n",
-    "            data = data.reshape(-1, 128, 128, 3)\n",
-    "            print(model.predict_classes(data))"
+    "            crop_img = frame[y1:y2, x1:x2]\n", #crops the face out of the frame
+    "            data = img_to_array(cv2.resize(crop_img, (128, 128))).flatten() / 255.0\n", #converts image to numpy array      
+    "            data = data.reshape(-1, 128, 128, 3)\n", #reshaped data to be 12x128, and 3 color channels
+    "            print(model.predict_classes(data))" #face array is given to model to predict real(1) or fake(0) then print that prediction
    ]
   },
+
   {
    "cell_type": "code",
    "execution_count": null,
