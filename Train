@@ -1,4 +1,8 @@
+#loads and preprocesses image data, leverages a pretrained CNN model for feature extraction and adds a classifier to create a model for classifying real vs dake images
+#key steps are loading data,encoding labels, compiling the model architecture and definign train/val splits
+
 {
+
  "cells": [
   {
    "cell_type": "code",
@@ -15,9 +19,9 @@
     "import seaborn as sn\n",
     "import pandas as pd\n",
     "from tensorflow.keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img\n",
-    "from tensorflow.keras.utils import to_categorical\n",
-    "from sklearn.model_selection import train_test_split\n",
-    "from sklearn.metrics import confusion_matrix"
+    "from tensorflow.keras.utils import to_categorical\n", #convert label vectors[0,1,2] into a matrix needed for training nueral networks
+    "from sklearn.model_selection import train_test_split\n", #splits data into train and validation sets
+    "from sklearn.metrics import confusion_matrix"#used to create a confusion matrix for model that tells you how well it performed
    ]
   },
   {
@@ -26,33 +30,33 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "input_shape = (128, 128, 3)\n",
-    "data_dir = 'dataset'\n",
+    "input_shape = (128, 128, 3)\n", #defines input shape
+    "data_dir = 'dataset'\n", #creates variable data_sir to hold dataset directory
     "\n",
-    "real_data = [f for f in os.listdir(data_dir+'/real') if f.endswith('.png')]\n",
-    "fake_data = [f for f in os.listdir(data_dir+'/fake') if f.endswith('.png')]\n",
+    "real_data = [f for f in os.listdir(data_dir+'/real') if f.endswith('.png')]\n",#gets list of the names of the real images in real folder
+    "fake_data = [f for f in os.listdir(data_dir+'/fake') if f.endswith('.png')]\n",#gets list of the names of the fake in fake folder
     "\n",
     "X = []\n",
     "Y = []\n",
     "\n",
-    "for img in real_data:\n",
-    "    X.append(img_to_array(load_img(data_dir+'/real/'+img)).flatten() / 255.0)\n",
-    "    Y.append(1)\n",
+    "for img in real_data:\n", #loops through all of the real images in the real folder
+    "    X.append(img_to_array(load_img(data_dir+'/real/'+img)).flatten() / 255.0)\n",#add normalized image array to X
+    "    Y.append(1)\n", #adds 1 to Y(1=real)
     "for img in fake_data:\n",
     "    X.append(img_to_array(load_img(data_dir+'/fake/'+img)).flatten() / 255.0)\n",
     "    Y.append(0)\n",
     "\n",
-    "Y_val_org = Y\n",
+    "Y_val_org = Y\n", #stores the image labels
     "\n",
     "#Normalization\n",
-    "X = np.array(X)\n",
-    "Y = to_categorical(Y, 2)\n",
+    "X = np.array(X)\n", #converts list X to numpy array
+    "Y = to_categorical(Y, 2)\n", #converts Y_val_org to one-hot encoded vectors for our nueral network. goes from 1->[0,1] and 0->[1,0]
     "\n",
     "#Reshape\n",
     "X = X.reshape(-1, 128, 128, 3)\n",
     "\n",
     "#Train-Test split\n",
-    "X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size = 0.2, random_state=5)\n"
+    "X_train, X_val, Y_train, Y_val = train_test_split(X, Y, test_size = 0.2, random_state=5)\n" #splits data into 80% train and 20% validation
    ]
   },
   {
@@ -95,13 +99,14 @@
     "from tensorflow.keras import optimizers\n",
     "from tensorflow.keras.callbacks import ReduceLROnPlateau, EarlyStopping\n",
     "\n",
-    "googleNet_model = InceptionResNetV2(include_top=False, weights='imagenet', input_shape=input_shape)\n",
+    "googleNet_model = InceptionResNetV2(include_top=False, weights='imagenet', input_shape=input_shape)\n", #loads pretrained model
     "googleNet_model.trainable = True\n",
     "model = Sequential()\n",
-    "model.add(googleNet_model)\n",
+    "model.add(googleNet_model)\n", 
     "model.add(GlobalAveragePooling2D())\n",
     "model.add(Dense(units=2, activation='softmax'))\n",
-    "model.compile(loss='binary_crossentropy',\n",
+
+    "model.compile(loss='binary_crossentropy',\n", 
     "              optimizer=optimizers.Adam(lr=1e-5, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False),\n",
     "              metrics=['accuracy'])\n",
     "model.summary()"
@@ -115,7 +120,7 @@
     {
      "name": "stdout",
      "output_type": "stream",
-     "text": [
+     "text": [ #just an example of what the output should resemble? im not sure 
       "Train on 2996 samples, validate on 749 samples\n",
       "Epoch 1/20\n",
       "2996/2996 [==============================] - 57s 19ms/sample - loss: 0.5870 - accuracy: 0.7196 - val_loss: 0.5837 - val_accuracy: 0.7690\n",
@@ -160,15 +165,16 @@
      ]
     }
    ],
+
    "source": [
     "#Currently not used\n",
     "early_stopping = EarlyStopping(monitor='val_loss',\n",
     "                               min_delta=0,\n",
     "                               patience=2,\n",
-    "                               verbose=0, mode='auto')\n",
-    "EPOCHS = 20\n",
-    "BATCH_SIZE = 100\n",
-    "history = model.fit(X_train, Y_train, batch_size = BATCH_SIZE, epochs = EPOCHS, validation_data = (X_val, Y_val), verbose = 1)"
+    "                               verbose=0, mode='auto')\n", #creates an early stop callback that stops training when the validation loss stops improving
+    "EPOCHS = 20\n", #number of training epoch =20, one epoch is one full pass through training data
+    "BATCH_SIZE = 100\n", 
+    "history = model.fit(X_train, Y_train, batch_size = BATCH_SIZE, epochs = EPOCHS, validation_data = (X_val, Y_val), verbose = 1)"#trains model on training data, history callback stores data about training
    ]
   },
   {
@@ -189,6 +195,7 @@
      "output_type": "display_data"
     }
    ],
+   #this plots accuracy and loss for epochs 
    "source": [
     "f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 4))\n",
     "t = f.suptitle('Pre-trained InceptionResNetV2 Transfer Learn with Fine-Tuning & Image Augmentation Performance ', fontsize=12)\n",
@@ -242,7 +249,7 @@
    ],
    "source": [
     "#Output confusion matrix\n",
-    "def print_confusion_matrix(y_true, y_pred):\n",
+    "def print_confusion_matrix(y_true, y_pred):\n",#function to print confusion matrix
     "    cm = confusion_matrix(y_true, y_pred)\n",
     "    print('True positive = ', cm[0][0])\n",
     "    print('False positive = ', cm[0][1])\n",
