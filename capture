@@ -1,4 +1,17 @@
+# the key goal of this code is to prepare a dataset of real and fake faces by extracting them from labeled videos.
+# This dataset can then be used to train a classification model in the next steps.
+# It is not doing any model testing or predictions. 
+
+"""
+This code is responsible for preparing a dataset of real and fake faces by extracting them from labeled videos. The dataset can then be used to train a classification model in the next steps.
+
+The code first imports the necessary libraries, including dlib for face detection and OpenCV for image processing. It then loads the metadata for the training videos and iterates through each video, detecting faces in each frame and saving the cropped face images to the 'dataset/real' or 'dataset/fake' directories based on the video's label.
+
+The code uses the dlib face detector to find faces in each frame, and then crops and resizes the detected faces to 128x128 pixels before saving them to the appropriate directory.
+"""
+
 {
+
  "cells": [
   {
    "cell_type": "code",
@@ -15,39 +28,67 @@
     "from PIL import Image, ImageChops, ImageEnhance"
    ]
   },
+
   {
    "cell_type": "code",
    "execution_count": 2,
    "metadata": {},
    "outputs": [],
    "source": [
+       
+    #creates a variable called train_frame_folder that stores the path to the training video frames directory\n",
     "train_frame_folder = 'train_sample_videos'\n",
+
+    #opens the file and loads in the metadata for the training videos
     "with open(os.path.join(train_frame_folder, 'metadata.json'), 'r') as file:\n",
     "    data = json.load(file)\n",
-    "list_of_train_data = [f for f in os.listdir(train_frame_folder) if f.endswith('.mp4')]\n",
+    #creates a list of all of the training videos and images in the directory
+    "list_of_train_data = [f for f in os.listdir(train_frame_folder) if f.endswith('.mp4') or f.endswith('.jpg')]\n",
+    #create variable called detector that stores the face detector from the dlib library
     "detector = dlib.get_frontal_face_detector()\n",
-    "for vid in list_of_train_data:\n",
-    "    count = 0\n",
-    "    cap = cv2.VideoCapture(os.path.join(train_frame_folder, vid))\n",
-    "    frameRate = cap.get(5)\n",
-    "    while cap.isOpened():\n",
-    "        frameId = cap.get(1)\n",
-    "        ret, frame = cap.read()\n",
-    "        if ret != True:\n",
-    "            break\n",
-    "        if frameId % ((int(frameRate)+1)*1) == 0:\n",
-    "            face_rects, scores, idx = detector.run(frame, 0)\n",
-    "            for i, d in enumerate(face_rects):\n",
-    "                x1 = d.left()\n",
-    "                y1 = d.top()\n",
-    "                x2 = d.right()\n",
-    "                y2 = d.bottom()\n",
-    "                crop_img = frame[y1:y2, x1:x2]\n",
-    "                if data[vid]['label'] == 'REAL':\n",
-    "                    cv2.imwrite('dataset/real/'+vid.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n",
-    "                elif data[vid]['label'] == 'FAKE':\n",
-    "                    cv2.imwrite('dataset/fake/'+vid.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n",
-    "                count+=1"
+    #loop goes through each video or image in list
+    "for input in list_of_train_data:\n",
+    "    count = 0\n", #face count?
+    #checks if the data input is from a video
+    "    if input.endswith('.mp4'):\n",
+    #opens the video
+    "       cap = cv2.VideoCapture(os.path.join(train_frame_folder, input))\n",
+    #gets frame rate of video
+    "       frameRate = cap.get(5)\n",
+    #loop goes through each frame in video
+    "       while cap.isOpened():\n",
+    "           frameId = cap.get(1)\n", #gets frame number
+    "           ret, frame = cap.read()\n", #reads frame
+    "           if ret != True:\n", #if frame is not read correctly
+    "               break\n", 
+    "           if frameId % ((int(frameRate)+1)*1) == 0:\n", #if frame is 1 second apart
+    "               face_rects, scores, idx = detector.run(frame, 0)\n", #detects faces in frame
+    "               for i, d in enumerate(face_rects):\n", #iterates through each face detected in frame
+    "                   x1 = d.left()\n", #x1,x2,y1,y1 gets coordinates of face
+    "                   y1 = d.top()\n",
+    "                   x2 = d.right()\n",
+    "                   y2 = d.bottom()\n",
+    "                   crop_img = frame[y1:y2, x1:x2]\n", #crops the face from the frame
+    "                   if data[input]['label'] == 'REAL':\n", #checks label for the video to determine if it is real or fake
+    "                       cv2.imwrite('dataset/real/'+input.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n", #saves face to the real dataset directory so we can train model with it later
+    "                   elif data[input]['label'] == 'FAKE':\n",
+    "                       cv2.imwrite('dataset/fake/'+input.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n",
+    "                   count+=1" #adds one to face count?
+    #if the input is an image
+    "     elif input.endswith('.jpg'):\n",
+    "       image = cv2.imread(os.path.join(train_frame_folder, input))\n",
+    "       face_rects, scores, idx = detector.run(image, 0)\n",
+    "       for i, d in enumerate(face_rects):\n",
+    "           x1 = d.left()\n",
+    "           y1 = d.top()\n",
+    "           x2 = d.right()\n",
+    "           y2 = d.bottom()\n", 
+    "           crop_img = image[y1:y2, x1:x2]\n",
+    "           if data[input]['label'] == 'REAL':\n",
+    "               cv2.imwrite('dataset/real/'+input.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n",
+    "           elif data[input]['label'] == 'FAKE':\n",
+    "               cv2.imwrite('dataset/fake/'+input.split('.')[0]+'_'+str(count)+'.png', cv2.resize(crop_img, (128, 128)))\n",
+    "           count+=1"
    ]
   }
  ],
@@ -73,3 +114,4 @@
  "nbformat": 4,
  "nbformat_minor": 4
 }
+
