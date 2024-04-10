@@ -27,8 +27,9 @@
     "list_of_train_fake_data = [f for f in os.listdir(train_fake_input) if f.endswith('.mp4') or f.endswith('.jpg')]\n",
     "detector = dlib.get_frontal_face_detector()\n",
     "\n",
-    "for input in list_of_train_fake_data:\n",
     "  count = 0\n",
+
+    "for input in list_of_train_fake_data:\n",
     "  if input.endswith('.mp4'):\n",
     "    cap = cv2.VideoCapture(os.path.join(train_fake_input, input))\n",
     "    frameRate = cap.get(5)\n",
@@ -70,8 +71,9 @@
     "\n",
     "train_real_input ='real_img'\n",
     "list_of_train_real_data = [f for f in os.listdir(train_real_input) if f.endswith('.mp4') or f.endswith('.jpg')]\n",
-    "for input in list_of_train_real_data:\n",
     "  count = 0\n",
+
+    "for input in list_of_train_real_data:\n",
     "  if input.endswith('.mp4'):\n",
     "    cap = cv2.VideoCapture(os.path.join(train_real_input, input))\n",
     "    frameRate = cap.get(5)\n",
