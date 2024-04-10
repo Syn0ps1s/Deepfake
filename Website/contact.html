@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepBreak</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <ul class ="nav">
+
+        <div class="logo">
+            <a href="home.html">DEEPBREAK</a>
+        </div>
+
+        <li><a href="home.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+<div class="banner">
+    <img class="banner-img" src="headingBackground.png">
+    <div class="banner-text">
+        <h1>DeepBreak</h1>
+        <p>Your Shield Against Deepfakes</p>
+    </div>
+</div>
+<div class = "bannerBar">
+</div>
+
+<div class="main">
+    <div id="about-area">
+        <!---accept the file type image-->
+        <div id="about-box">
+            <div class="mainTitle">
+                <h1>Contact Us</h1>
+            </div>
+            <div class="subTitle">
+                <p>How can we help?</p>
+            </div>
+        <div id = "contact-form">
+            <div id="topic-selection">
+                <label for="topic">Select Topic:</label>
+                <select id="topic" name="topic">
+                    <option value="" disabled selected hidden>Please select a topic</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="analysis-problem">Analysis Problem</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                        <label for="comments">Comments:</label>
+                        <textarea id="comments" name="comments" placeholder="Enter your comments"></textarea>
+                        <button type="submit" class="send-button">Send Message</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="contact.js"></script>
+</body>
+</html>

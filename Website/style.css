@@ -95,8 +95,20 @@
     align-items: center;
     justify-content: center;
 }
-.mainTitle {
+.mainUploadTitle {
     margin-bottom: 100px;
+    font-size: 20px;
+    text-align: center;
+}
+.mainTitle {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.subTitle{
+    font-size: 20px;
+    font-weight: bold;
     text-align: center;
 }
 #drop-area
@@ -148,4 +160,74 @@
 }
 #detect-button-container button:hover {
     background-color: #a6dfa8;
+}
+/*about page*/
+#about-area
+{
+    width: 1000px;
+    height: 1000px;
+    padding: 30px;
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background: #fff;
+    text-align: center;
+}
+#contact-form {
+    margin: 100px;
+    text-align: center;
+}
+#topic-selection select {
+    width: 750px;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+}
+#topic-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#topic-selection label {
+    margin-bottom: 5px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 750px;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+.form-group label {
+    margin-top: 30px;
+    display: block;
+    text-align: left; /* Align the label to the left */
+    margin-bottom: 5px;
+}
+#comments {
+    width: 750; /* Adjust the width as needed */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    resize: vertical; /* Allow vertical resizing only */
+    max-height: 300px; /* Set the maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+.send-button {
+    margin-top: 70px;
+    bottom: 10px;
+    right: 10px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c793;
+    cursor: pointer;
 }

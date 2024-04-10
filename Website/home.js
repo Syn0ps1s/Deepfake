@@ -18,9 +18,19 @@ function uploadImage()
     //remove the content in the upload box
     detectButtonContainer.innerHTML = "";
     imageView.style.border = linkImg ? "none" : "2px dashed #696969";
-    //append the button to the container
     detectButtonContainer.appendChild(detectButton);
 }
+
+imageView.addEventListener("dragover", function(e)
+{
+    e.preventDefault();
+});
+imageView.addEventListener("drop", function(e)
+{
+    e.preventDefault();
+    inputImg.files = e.dataTransfer.files;
+    uploadImage();
+});
 
 function detectImage() 
 {
