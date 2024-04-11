@@ -1,0 +1,233 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+/*navigation buttons*/
+.nav
+{
+    background-color: #707070;
+    color: #000000;
+    list-style: none;
+    text-align: right;
+    padding: 20px 0 20px 0;
+}
+.nav > li
+{
+    display: inline-block;
+    padding: 0 25px 0 25px;
+    font-size: 12px;
+}
+.nav > li > a
+{
+    text-decoration: none;
+    color: #ffffff
+}
+.nav > li > a:hover
+{
+    color: #c1c1c1
+}
+.logo
+{
+    color: #000000;
+    float: left;
+    padding-left: 25px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.logo > a 
+{
+    text-decoration: none;
+    color: #ffffff
+}
+/*banner image*/
+.banner
+{
+    width: 100%;
+    max-height: 400px;
+    display: block;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+}
+.banner > .banner-img
+{
+    width: 100%;
+    display: block;
+    filter: blur(3px);
+}
+.banner-text {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    width: 60%;
+}
+
+.banner-text h1 {
+    font-size: 4vw;
+    margin-bottom: 1vw;
+}
+
+.banner-text p {
+    font-size: 2vw;
+    margin-top: 0;
+}
+.bannerBar
+{
+    background-color: #707070;
+    color: #000000;
+    list-style: none;
+    text-align: right;
+    padding: 20px 0 0 0;
+}
+/*main content below banner*/
+.main
+{
+    width: 100%;
+    background: linear-gradient(to top, #cccbca 0%, #abe4ff 100%);
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+    align-items: center;
+    justify-content: center;
+}
+.mainUploadTitle {
+    margin-bottom: 100px;
+    font-size: 20px;
+    text-align: center;
+}
+.mainTitle {
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+.subTitle{
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+#drop-area
+{
+    width: 500px;
+    height: 300px;
+    padding: 30px;
+    border-radius: 20px;
+    background: #fff;
+    text-align: center;
+}
+#upload-box
+{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 2px dashed #696969;
+    background: #e6e8fc;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+#upload-box img
+{   
+    margin-top: 30px;
+    width: 100px;
+}
+#upload-box span
+{
+    display: block;
+    font-size: 12px;
+    margin-top: 15px;
+    color: #706f6f;
+}
+/*detect analyze button*/
+#detect-button-container {
+    position: absolute;
+    margin-top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+#detect-button-container button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c793;
+    cursor: pointer;
+}
+#detect-button-container button:hover {
+    background-color: #a6dfa8;
+}
+/*about page*/
+#about-area
+{
+    width: 1000px;
+    height: 1000px;
+    padding: 30px;
+    border-radius: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background: #fff;
+    text-align: center;
+}
+#contact-form {
+    margin: 100px;
+    text-align: center;
+}
+#topic-selection select {
+    width: 750px;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+}
+#topic-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+#topic-selection label {
+    margin-bottom: 5px;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 750px;
+    height: 50px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+.form-group label {
+    margin-top: 30px;
+    display: block;
+    text-align: left; /* Align the label to the left */
+    margin-bottom: 5px;
+}
+#comments {
+    width: 750; /* Adjust the width as needed */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    resize: vertical; /* Allow vertical resizing only */
+    max-height: 300px; /* Set the maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+.send-button {
+    margin-top: 70px;
+    bottom: 10px;
+    right: 10px;
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c793;
+    cursor: pointer;
+}

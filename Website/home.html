@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepBreak</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <ul class ="nav">
+
+        <div class="logo">
+            <a href="home.html">DEEPBREAK</a>
+        </div>
+
+        <li><a href="home.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+
+<div class="banner">
+    <img class="banner-img" src="headingBackground.png">
+    <div class="banner-text">
+        <h1>DeepBreak</h1>
+        <p>Your Shield Against Deepfakes</p>
+    </div>
+</div>
+<div class = "bannerBar">
+</div>
+
+<div class="main">
+    <div class="mainUploadTitle">
+        <h1>Deepfake Image Detector</h1>
+        <p>Upload your image to detect AI-generated content.</p>
+    </div>
+    
+    <div id="drop-area">
+        <!---accept the file type image-->
+        <div id="upload-box">
+            <img src="cloudimg.png">
+            <p>Drag or click here to upload an image</p>
+            <input type="file" accept="image/*" id="input-img">
+        </div>
+        <div id="detect-button-container"></div>
+    </div>
+</div>
+
+
+<script src="home.js"></script>
+</body>
+</html>
