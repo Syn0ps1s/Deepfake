@@ -173,6 +173,7 @@
     background: #fff;
     text-align: center;
 }
+/*contact page*/
 #contact-form {
     margin: 100px;
     text-align: center;
@@ -206,20 +207,24 @@
 .form-group label {
     margin-top: 30px;
     display: block;
-    text-align: left; /* Align the label to the left */
+    text-align: left;
     margin-bottom: 5px;
 }
 #comments {
-    width: 750; /* Adjust the width as needed */
+    width: 750;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
     margin-top: 5px;
-    resize: vertical; /* Allow vertical resizing only */
-    max-height: 300px; /* Set the maximum height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    resize: vertical;
+    max-height: 300px;
+    overflow-y: auto;
+}
+#error-message {
+    color: red;
+    font-weight: bold;
 }
 .send-button {
     margin-top: 70px;
