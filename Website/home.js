@@ -1,6 +1,7 @@
 const inputImg = document.getElementById("input-img");
 const imageView = document.getElementById("upload-box");
 const detectButtonContainer = document.getElementById("detect-button-container");
+const resultContainer = document.getElementById("detect-button-container");
 
 inputImg.addEventListener("change", uploadImage);
 
@@ -52,8 +53,34 @@ async function detectImage(imageData) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        const result = await response.json();
-        console.log(result);
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        const result = jsonResponse.result;
+
+        detectButtonContainer.innerHTML = '';
+
+        const resultText = document.createElement("p");
+        resultText.textContent = result === "Fake" ? "This image is fake." : "This image is real.";
+
+        if (result === "Fake") {
+            resultText.style.color = "red";
+            resultText.style.fontWeight = "bold";
+        } else {
+            resultText.style.color = "green";
+            resultText.style.fontWeight = "bold";
+        }
+
+        resultContainer.innerHTML = '';
+        resultContainer.appendChild(resultText);
+
+        const analyzeAnotherButton = document.createElement("button");
+        analyzeAnotherButton.textContent = "Analyze Another Image";
+        analyzeAnotherButton.addEventListener("click", function() {
+            window.location.href = "home.html";
+        });
+        resultContainer.appendChild(analyzeAnotherButton);
+
     } catch (error) {
         console.error('Error:', error);
     }

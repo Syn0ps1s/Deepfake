@@ -131,11 +131,6 @@
     background-position: center;
     overflow: hidden;
 }
-#upload-box img
-{   
-    margin-top: 30px;
-    width: 100px;
-}
 #upload-box span
 {
     display: block;
