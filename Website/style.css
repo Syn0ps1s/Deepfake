@@ -156,6 +156,18 @@
 #detect-button-container button:hover {
     background-color: #a6dfa8;
 }
+.detect-button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #91c793;
+    cursor: pointer;
+}
+
+.detect-button:hover {
+    background-color: #a6dfa8;
+}
+
 /*about page*/
 #about-area
 {

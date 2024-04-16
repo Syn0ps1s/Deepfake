@@ -1,7 +1,7 @@
 const inputImg = document.getElementById("input-img");
 const imageView = document.getElementById("upload-box");
 const detectButtonContainer = document.getElementById("detect-button-container");
-const resultContainer = document.getElementById("detect-button-container");
+const resultContainer = document.getElementById("result-container");
 
 inputImg.addEventListener("change", uploadImage);
 
@@ -12,17 +12,15 @@ function uploadImage() {
         reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
-                imageView.innerHTML = '';
+                imageView.innerHTML = "";
                 imageView.appendChild(img);
-
                 const detectButton = document.createElement("button");
+				detectButton.classList.add("detect-button");
                 detectButton.textContent = "Analyze Image";
                 detectButton.addEventListener("click", function() {
-                    const imageData = event.target.result.split(',')[1];
-                    detectImage(imageData);
+                    detectImage(event.target.result.split(',')[1]);
                 });
-
-                detectButtonContainer.innerHTML = '';
+                detectButtonContainer.innerHTML = "";
                 detectButtonContainer.appendChild(detectButton);
             };
             img.src = event.target.result;
@@ -30,58 +28,35 @@ function uploadImage() {
         reader.readAsDataURL(file);
     }
 }
-
-imageView.addEventListener("dragover", function(e) {
-    e.preventDefault();
-});
-
-imageView.addEventListener("drop", function(e) {
-    e.preventDefault();
-    inputImg.files = e.dataTransfer.files;
-    uploadImage();
-});
-
-async function detectImage(imageData) {
+async function detectImage(base64Data) {
+    const blob = await fetch(`data:image/jpeg;base64,${base64Data}`).then(res => res.blob());
     try {
         const response = await fetch('http://127.0.0.1:5000/detect_deepfake', {
             method: 'POST',
+            body: blob,
             headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ image: imageData })
+                'Content-Type': 'application/octet-stream'
+            }
         });
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+        if (!response.ok) throw new Error('Network response was not ok');
         const jsonResponse = await response.json();
-        console.log(jsonResponse);
-
         const result = jsonResponse.result;
-
-        detectButtonContainer.innerHTML = '';
-
+        resultContainer.innerHTML = "";
         const resultText = document.createElement("p");
         resultText.textContent = result === "Fake" ? "This image is fake." : "This image is real.";
-
-        if (result === "Fake") {
-            resultText.style.color = "red";
-            resultText.style.fontWeight = "bold";
-        } else {
-            resultText.style.color = "green";
-            resultText.style.fontWeight = "bold";
-        }
-
-        resultContainer.innerHTML = '';
+        resultText.style.fontSize = "25px";
+        resultText.style.color = result === "Fake" ? "red" : "green";
+        resultText.style.fontWeight = "bold";
         resultContainer.appendChild(resultText);
-
-        const analyzeAnotherButton = document.createElement("button");
-        analyzeAnotherButton.textContent = "Analyze Another Image";
-        analyzeAnotherButton.addEventListener("click", function() {
-            window.location.href = "home.html";
-        });
-        resultContainer.appendChild(analyzeAnotherButton);
-
+		const analyzeAnotherButton = document.createElement("button");
+		analyzeAnotherButton.textContent = "Analyze Another Image";
+		analyzeAnotherButton.classList.add("detect-button");
+		analyzeAnotherButton.addEventListener("click", function() {
+			window.location.href = "home.html";
+		});
+		detectButtonContainer.innerHTML = "";
+		detectButtonContainer.appendChild(analyzeAnotherButton);
     } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
     }
 }
